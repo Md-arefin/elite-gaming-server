@@ -37,9 +37,15 @@ async function run() {
 
         const toyCollection = client.db('EliteGamerDB').collection("EliteGear");
 
+        app.get('/eliteGear', async(req, res) =>{
+            const cursor = toyCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
         app.post('/eliteGear', async (req, res) => {
             const newToy = req.body;
-            console.log(newToy);
+            // console.log(newToy);
             const result = await toyCollection.insertOne(newToy);
             res.send(result);
         })
