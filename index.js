@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 })
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const uri = `mongodb+srv://${process.env.DB_User}:${process.env.DB_Pass}@cluster0.bqstehg.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -40,6 +40,13 @@ async function run() {
         app.get('/eliteGear', async(req, res) =>{
             const cursor = toyCollection.find();
             const result = await cursor.toArray();
+            res.send(result);
+        })
+
+        app.get('/eliteGear/:id', async(req, res) =>{
+            const id = req.params.id;
+            const query = {_id: new ObjectId(id)};
+            const result = await toyCollection.findOne(query);
             res.send(result);
         })
 
