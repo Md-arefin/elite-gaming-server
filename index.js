@@ -21,9 +21,6 @@ const uri = `mongodb+srv://${process.env.DB_User}:${process.env.DB_Pass}@cluster
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 
 
-// eliteGamer
-// bRyfUf0JQfTOi9nX
-
 
 const client = new MongoClient(uri, {
     serverApi: {
