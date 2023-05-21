@@ -37,15 +37,15 @@ async function run() {
 
         const toyCollection = client.db('EliteGamerDB').collection("EliteGear");
 
-        app.get('/eliteGear', async(req, res) =>{
+        app.get('/eliteGear', async (req, res) => {
             const cursor = toyCollection.find();
             const result = await cursor.toArray();
             res.send(result);
         })
 
-        app.get('/eliteGear/:id', async(req, res) =>{
+        app.get('/eliteGear/:id', async (req, res) => {
             const id = req.params.id;
-            const query = {_id: new ObjectId(id)};
+            const query = { _id: new ObjectId(id) };
             const result = await toyCollection.findOne(query);
             res.send(result);
         })
@@ -53,10 +53,10 @@ async function run() {
         app.get('/eliteGames', async (req, res) => {
             console.log(req.query);
             let query = {}
-            if(req.query?.email){
-                query = { email: req.query.email } 
+            if (req.query?.email) {
+                query = { email: req.query.email }
             }
-            const result = await toyCollection.find( query).toArray();
+            const result = await toyCollection.find(query).toArray();
             res.send(result);
         })
 
@@ -67,9 +67,27 @@ async function run() {
             res.send(result);
         })
 
-          app.delete('/eliteGear/:id', async(req, res) =>{
+        app.put('/eliteGear/:id', async (req, res) => {
             const id = req.params.id;
-            const query = {_id: new ObjectId(id)};
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true }
+            const updatedToys = req.body;
+            const modifiedToy = {
+                $set: {
+                    Price: updatedToys.Price,
+                    Quantity: updatedToys.Quantity,
+                    description: updatedToys.description
+                }
+            }
+            console.log(updatedToys, modifiedToy);
+
+            const result = await toyCollection.updateOne(filter, modifiedToy, options);
+            res.send(result);
+        })
+
+        app.delete('/eliteGear/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
             const result = await toyCollection.deleteOne(query);
             res.send(result);
         })
