@@ -50,6 +50,16 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/eliteGear', async (req, res) => {
+            console.log(req.query.email);
+            let query = {}
+            if(req.query?.email){
+                query = { email: req.query.email } 
+            }
+            const result = await toyCollection.find(query).toArray();
+            res.send(result);
+        })
+
         app.post('/eliteGear', async (req, res) => {
             const newToy = req.body;
             // console.log(newToy);
