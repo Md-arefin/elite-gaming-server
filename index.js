@@ -50,13 +50,13 @@ async function run() {
             res.send(result);
         })
 
-        app.get('/eliteGear', async (req, res) => {
-            console.log(req.query.email);
+        app.get('/eliteGames', async (req, res) => {
+            console.log(req.query);
             let query = {}
             if(req.query?.email){
                 query = { email: req.query.email } 
             }
-            const result = await toyCollection.find(query).toArray();
+            const result = await toyCollection.find( query).toArray();
             res.send(result);
         })
 
@@ -64,6 +64,13 @@ async function run() {
             const newToy = req.body;
             // console.log(newToy);
             const result = await toyCollection.insertOne(newToy);
+            res.send(result);
+        })
+
+          app.delete('/eliteGear/:id', async(req, res) =>{
+            const id = req.params.id;
+            const query = {_id: new ObjectId(id)};
+            const result = await toyCollection.deleteOne(query);
             res.send(result);
         })
 
